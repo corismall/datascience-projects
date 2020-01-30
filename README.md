@@ -1,2 +1,2 @@
 # personal-projects
-personal projects to help me improve my bioinformatic skillz
+1) Kaggle's titanic ML tutorial 
