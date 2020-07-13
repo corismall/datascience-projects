@@ -1,0 +1,71 @@
+Lecture 1:
+Lecture 2:
+Lecture 3:
+Lecture 4:
+
+Lecture 5:
+Functions part 1:
+-functions are good to use, they clean up your code (reusable code) and they allow you to abstract your program into sub-steps (generalizability of the tasks)
+
+-simple useful functions:computing GC content, checking for in frame stop codon, reverse complementing a seq
+
+-local vs global variables depend on whether the variable is created inside a function or not. created in function = local
+
+Functions part 3:
+-list comprehensions: a concise way to create lists whose elements are a result of some operation conducted on another list or sequence
+
+    Example of list comprehension: 
+    new_list = [operation(i) for i in old_list if filter(i)]
+    
+    same as:
+    for i in old_list:
+        if filter(i):
+            new_list.append(operation(i))
+
+
+
+
+
+-split: returns a list of all words in a string --default split element is a space, can change the separator element
+join: does the reverse (list to string)
+
+-a function can have defined arguments and also * arguments meaning the arguments inputed into the function that are defined get treated in a cumulative fashion (and the amount of arguments doesnt matter)
+
+Lecture 6:
+
+
+Lecture 7:
+
+Exercise: building a dictionary containing all sequences from a fasta file: psuedocode: 
+
+    open file
+    read lines
+    for line in lines:
+        if line is in a header
+            get sequence name
+            create new entry in dictionary
+        else
+            update sequence in dictionary
+            by adding current line to dictionary
+    close file
+    
+
+    Lecture 7.3 communicating with the outside
+    
+    - creating a callable script for command line use
+    
+    !# /usr/bin/python
+    import sys  ## built in module for system-specific paratmeters and functions, provides access to
+                   variables used or maintained by the python interpreter and to functions that interact strongly
+                   with the interpreter
+                     sys.argv <- method in sys that provides a list of stored arguments for the script that is 
+                     called in the command line
+    
+    import getopt  ## another built in module that allows you to process arguments of sys.argv
+    
+    def usage():...
+    
+    o,a = getopt.getopt(sys.argv[1:], 'l:h')   # o = optional arguments, a = required arguments 
+                                               ;getopt.getopt(sys.argv[1:]) = use getopt method in the getopt 
+                                               package to get the list of arguments minus the filename at [0]
+                                               'l:h' = the options -l and -h expect a value

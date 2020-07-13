@@ -1,0 +1,124 @@
+Lecture 1:
+Lecture 2:
+Lecture 3:
+Lecture 4:
+
+Lecture 5:
+Functions part 1:
+-functions are good to use, they clean up your code (reusable code) and they allow you to abstract your program into sub-steps (generalizability of the tasks)
+
+-simple useful functions:computing GC content, checking for in frame stop codon, reverse complementing a seq
+
+-local vs global variables depend on whether the variable is created inside a function or not. created in function = local
+
+Functions part 3:
+-list comprehensions: a concise way to create lists whose elements are a result of some operation conducted on another list or sequence
+
+    Example of list comprehension: 
+    new_list = [operation(i) for i in old_list if filter(i)]
+    
+    same as:
+    for i in old_list:
+        if filter(i):
+            new_list.append(operation(i))
+
+
+
+
+
+-split: returns a list of all words in a string --default split element is a space, can change the separator element
+join: does the reverse (list to string)
+
+-a function can have defined arguments and also * arguments meaning the arguments inputed into the function that are defined get treated in a cumulative fashion (and the amount of arguments doesnt matter)
+
+Lecture 6:
+
+
+Lecture 7:
+
+Exercise: building a dictionary containing all sequences from a fasta file: psuedocode: 
+
+    open file
+    read lines
+    for line in lines:
+        if line is in a header
+            get sequence name
+            create new entry in dictionary
+        else
+            update sequence in dictionary
+            by adding current line to dictionary
+    close file
+    
+
+    Lecture 7.3 communicating with the outside
+    
+    - creating a callable script for command line use
+    
+    !# /usr/bin/python
+    import sys  ## built in module for system-specific paratmeters and functions, provides access to
+                   variables used or maintained by the python interpreter and to functions that interact strongly
+                   with the interpreter
+                     sys.argv <- method in sys that provides a list of stored arguments for the script that is 
+                     called in the command line
+    
+    import getopt  ## another built in module that allows you to process arguments of sys.argv
+    
+    def usage():...
+    
+    o,a = getopt.getopt(sys.argv[1:], 'l:h')   # o = optional arguments, a = required arguments 
+                                               ;getopt.getopt(sys.argv[1:]) = use getopt method in the getopt 
+                                               package to get the list of arguments minus the filename at [0]
+                                               'l:h' = for the option -l because of the : a value is expected
+                                               
+    opts = {}   ## storing option values in a dictionary
+    seqlen = 0
+
+    for k,v in o:
+        opts[k] = v  ## example lenghth value will be stored here
+
+    if '-h' in opts.keys():
+        usage(); sys.exit()  ##can put multiple functions on one line using ;
+
+    if len(a) < 1:  ##checks if the file exist by checking for the length of required argument list
+        usage(); sys.exit("input fasta file is missing") 
+        
+        
+        
+        
+Lecture 8: Biopython introduction!
+
+-> Check if biopython is installed:
+
+import Bio
+print(Bio.__version__)
+
+A simple usage example: identify the species from which a sequence came from (for ex: infectious disease diagnosis)
+
+-> Running blast over the internet:
+
+from Bio.blast import NCBIWWW  #from blast module import web methods 
+fasta_string = open("myseq.fa").read()
+result_handle = NCBIWWW.qblast("blastn","nt",fasta_string)  ## blastn = nucleotide blast program that searches nucleotides against nucleotide, 'nt' = non-redundant nucleotide database, fasta_string = query sequence
+
+to learn more:
+help(NCBIWWW.qblast)
+
+qblast default output (blast record) = xml format file
+
+-> Accessing blast record to format things nicely:
+from Bio.blast import NCBIXML
+blast_record = NCBIXML.read(result_handle)
+
+-> Parsing blast record:
+len(blast_records.alignments)
+E_VALUE_THRESH = 0.01
+for alignment in blast_records.alignments:
+    for hsp in alignment.hsps:
+        if hsp.expect < E_VALUE_THRESH:
+            print('*****Alignment*****')
+            print('sequence:', alignment.title)
+            print('length:', alignment.length)
+            print('e value:', hsp.expect)
+            print(hsp.query)
+            print(hsp.match)
+            print(hsp.sbjct)
